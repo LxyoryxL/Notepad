@@ -1,12 +1,17 @@
 <template>
   <div id="vue-memo">
-
     <!--  工具栏  -->
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <a class="navbar-brand">vue-memo</a>
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse" aria-expanded="false">
+          <a class="navbar-brand">vue-notepad</a>
+          <button
+            type="button"
+            class="navbar-toggle collapsed"
+            data-toggle="collapse"
+            data-target=".navbar-collapse"
+            aria-expanded="false"
+          >
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -14,7 +19,6 @@
         </div>
         <div class="collapse navbar-collapse navbar-right">
           <ul class="nav navbar-nav">
-
             <!--  新建  -->
             <li class="add dropdown">
               <a class="create-new dropdown-toggle" data-toggle="dropdown">新建</a>
@@ -33,7 +37,9 @@
             <li class="categories dropdown">
               <a class="current-category dropdown-toggle" data-toggle="dropdown">
                 {{ categories[currentCategoryId] }}
-                <span class="count badge">{{ memosFiltered.length }}</span>
+                <span
+                  class="count badge"
+                >{{ memosFiltered.length }}</span>
               </a>
               <ul class="dropdown-menu">
                 <li class="total" @click="filterBy(0, queryString)">
@@ -67,9 +73,7 @@
 
             <!--  排序器  -->
             <li class="sort-by dropdown">
-              <a class="dropdown-toggle" data-toggle="dropdown">
-                {{ currentSortBy }}
-              </a>
+              <a class="dropdown-toggle" data-toggle="dropdown">{{ currentSortBy }}</a>
               <ul class="dropdown-menu">
                 <li @click="sortByTimeOrTitle('title')">
                   <a>按标题排序</a>
@@ -88,10 +92,10 @@
                 class="search-box form-control"
                 placeholder="过滤标题、内容、时间戳"
                 v-model="queryString"
-                @keyup="filterBy(currentCategoryId, queryString)">
+                @keyup="filterBy(currentCategoryId, queryString)"
+              />
             </li>
             <!--  -->
-
           </ul>
         </div>
       </div>
@@ -106,43 +110,42 @@
     <!--  编辑器  -->
     <memo-editor></memo-editor>
     <!--  -->
-
   </div>
 </template>
 
 <script>
-import helpers from './helpers';
-import storeUtil from './storage';
-import memoItem from './components/memoItem.vue';
-import memoEditor from './components/memoEditor.vue';
+import helpers from "./helpers";
+import storeUtil from "./storage";
+import memoItem from "./components/memoItem.vue";
+import memoEditor from "./components/memoEditor.vue";
 
 let store = storeUtil.store;
 let Memo = storeUtil.Memo;
 
 export default {
-  data () {
+  data() {
     return {
       memos: store.memos,
       memosFiltered: [],
-      currentSortBy: '',
-      currentCategoryId: '',
-      queryString: '',
+      currentSortBy: "",
+      currentCategoryId: "",
+      queryString: "",
       categories: {
-        0: '全部',
-        1: '工作',
-        2: '生活',
-        3: '学习',
+        0: "全部",
+        1: "工作",
+        2: "生活",
+        3: "学习"
       },
-      helpers,
+      helpers
     };
   },
   components: {
     memoItem,
-    memoEditor,
+    memoEditor
   },
   methods: {
     // 过滤
-    filterBy (categoryId, queryString) {
+    filterBy(categoryId, queryString) {
       let result = [];
       // 先按照【类别id】过滤
       switch (categoryId) {
@@ -163,11 +166,14 @@ export default {
           this.currentCategoryId = 3;
           break;
       }
-      if (queryString !== '') {
-        result = result.filter((item) => {
+      if (queryString !== "") {
+        result = result.filter(item => {
           let matchesQuery = false;
           // 若【标题】或【日期字符串】包含查询字符串
-          if (item.title.indexOf(queryString) !== -1 || item.timeStamp.indexOf(queryString) !== -1) {
+          if (
+            item.title.indexOf(queryString) !== -1 ||
+            item.timeStamp.indexOf(queryString) !== -1
+          ) {
             matchesQuery = true;
           }
           // 或【文本类型 memo 的内容】包含查询字符串
@@ -179,10 +185,10 @@ export default {
         });
       }
       this.memosFiltered = result;
-      this.sortByTimeOrTitle('title');
+      this.sortByTimeOrTitle("title");
     },
     // 排序
-    sortByTimeOrTitle (option) {
+    sortByTimeOrTitle(option) {
       this.memosFiltered.sort((m1, m2) => {
         if (m1[option] < m2[option]) {
           return -1;
@@ -191,50 +197,48 @@ export default {
         }
       });
       this.currentSortBy =
-        option === 'timeStamp'
-        ? '按创建时间排序'
-        : '按标题排序';
+        option === "timeStamp" ? "按创建时间排序" : "按标题排序";
     },
     // 接收 memoItem 组件分发来的事件，广播给 memoEditor 组件
-    createMarkdown () {
-      this.$broadcast('createMarkdown');
+    createMarkdown() {
+      this.$broadcast("createMarkdown");
     },
-    createDoodle () {
-      this.$broadcast('createDoodle');
-    },
+    createDoodle() {
+      this.$broadcast("createDoodle");
+    }
   },
   computed: {
-    memosInWorkCate () {
-      return this.memos.filter((item) => {
+    memosInWorkCate() {
+      return this.memos.filter(item => {
         return item.categoryId === 1;
       });
     },
-    memosInLivingCate () {
-      return this.memos.filter((item) => {
+    memosInLivingCate() {
+      return this.memos.filter(item => {
         return item.categoryId === 2;
       });
     },
-    memosInStudyCate () {
-      return this.memos.filter((item) => {
+    memosInStudyCate() {
+      return this.memos.filter(item => {
         return item.categoryId === 3;
       });
-    },
+    }
   },
   events: {
-    editMarkdown (memo) {
-      this.$broadcast('editMarkdown', memo);
+    editMarkdown(memo) {
+      this.$broadcast("editMarkdown", memo);
     },
-    editDoodle (memo) {
-      this.$broadcast('editDoodle', memo);
-    },
+    editDoodle(memo) {
+      this.$broadcast("editDoodle", memo);
+    }
   },
   // 周期钩子
-  ready () {
+  ready() {
     this.filterBy(0, this.queryString);
-    this.sortByTimeOrTitle('title');
+    this.sortByTimeOrTitle("title");
   },
   watch: {
-    memosFiltered () {
+    memosFiltered() {
       helpers.resizeMemos();
     }
   }
@@ -242,5 +246,5 @@ export default {
 </script>
 
 <style lang="stylus">
-@import './style/main'
+@import './style/main';
 </style>
