@@ -8,14 +8,16 @@ const resizeMemos = () => {
 // 显示/隐藏编辑窗口、禁用/启用滚动
 const showEditorLayer = ($editorLayer) => {
   $(window).scrollTop(0);
-  $('.cover-layer').fadeIn();
-  $editorLayer.fadeIn();
+  $('.cover-layer').fadeIn(); //半透明灰色背景
+  $editorLayer.fadeIn(); //编辑框
   $('body').css('overflow', 'hidden');
   if (!window.isMobile) {
     $('.navbar').css('padding-right', '15px');
     $('body').css('padding-right', '15px');
   }
 };
+
+// 隐藏编辑窗口
 const hideEditorLayer = ($editorLayer) => {
   $('.cover-layer').fadeOut();
   $editorLayer.hide();
@@ -29,8 +31,7 @@ const hideEditorLayer = ($editorLayer) => {
 // 初始化涂鸦编辑器
 const initCanvas = (canvasEle, colorsEle, controllersEle, imageData) => {
   // 颜色值对象
-  const colorTable = [
-    {
+  const colorTable = [{
       name: 'black',
       regularCode: '#222',
       opagueCode: 'rgb(189, 189, 189)',
@@ -93,7 +94,7 @@ const initCanvas = (canvasEle, colorsEle, controllersEle, imageData) => {
 
   // 颜色选择器鼠标事件
   $(colorsEle).children('li')
-    .on('click', function() {
+    .on('click', function () {
       let $this = $(this);
       const tarColorName = $this.data('color');
       selectedColor = colorTable.find((item) => {

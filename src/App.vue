@@ -3,8 +3,9 @@
     <!--  工具栏  -->
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
+        <!-- 左边标题 -->
         <div class="navbar-header">
-          <a class="navbar-brand">vue-notepad</a>
+          <a class="navbar-brand">notepad</a>
           <button
             type="button"
             class="navbar-toggle collapsed"
@@ -17,6 +18,7 @@
             <span class="icon-bar"></span>
           </button>
         </div>
+        <!-- 右边导航栏 -->
         <div class="collapse navbar-collapse navbar-right">
           <ul class="nav navbar-nav">
             <!--  新建  -->

@@ -1,8 +1,11 @@
 /*
 只提供工作、生活、学习3个类别
 */
+
+// 时间戳处理
 const toReadableDate = (timeStamp) => {
   let dateObj = new Date(timeStamp);
+  // 处理0-9的数字为00-09
   const toTwoDigits = (str) => {
     if (str.valueOf() < 10) {
       return '0' + str;
@@ -30,7 +33,7 @@ class Memo {
     this.modificationDone = true;
   }
   // 取得260*260图片的 imageData
-  getImageData (imageUrl) {
+  getImageData(imageUrl) {
     let canvas = document.createElement('canvas');
     canvas.setAttribute('width', 260);
     canvas.setAttribute('height', 260);
@@ -47,34 +50,33 @@ class Memo {
 }
 
 class VueMemoStore {
-  constructor () {
+  constructor() {
     this.memos = [];
   }
-  loadFromLocalStorage () {
+  loadFromLocalStorage() {
     this.memos = JSON.parse(localStorage.getItem('store')).memos;
   }
-  saveToLocalStorage () {
+  saveToLocalStorage() {
     // imgData 加载完成后再进行保存
     let allModificationDoneFlag = setInterval(() => {
       if (!this.memos.some((item) => {
-        return item.modificationDone === false;
-      })) {
+          return item.modificationDone === false;
+        })) {
         clearInterval(allModificationDoneFlag);
         localStorage.setItem('store', JSON.stringify(this));
       }
     }, 10);
   }
-  add (memo) {
+  add(memo) {
     this.memos.push(memo);
   }
-  remove (memo) {
+  remove(memo) {
     this.memos.splice(this.memos.indexOf(memo), 1);
   }
-  update (memo, newMemo) {
+  update(memo, newMemo) {
     this.memos.splice(this.memos.indexOf(memo), 1, newMemo);
   }
-  init () {
-
+  init() {
     let m1 = new Memo({
       categoryId: 3,
       title: '1. 样式引用',
@@ -152,7 +154,6 @@ class VueMemoStore {
   }
 }
 
-let store = new VueMemoStore();
 
 if (localStorage.getItem('store') !== null) {
   store.loadFromLocalStorage();
@@ -160,6 +161,7 @@ if (localStorage.getItem('store') !== null) {
   store.init();
 }
 
+let store = new VueMemoStore();
 let storeUtil = {
   store,
   Memo,
