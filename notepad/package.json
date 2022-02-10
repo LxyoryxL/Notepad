@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "element-ui": "^2.11.1",
-    "node-sass": "^4.12.0",
+    "node-sass": "^7.0.0",
     "sass-loader": "^7.1.0",
     "vue": "^2.3.3",
     "vue-localstorage": "^0.3.0",
